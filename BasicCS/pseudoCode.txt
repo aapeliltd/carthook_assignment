@@ -1,0 +1,53 @@
+/*
+Database is an organized collection of data. 
+Database design is subjective but in the end, a normalized database design is the key
+when it comes to rational database.
+*/
+
+
+ /* It will be nice if we have country and city entities, to model the real world NBA,  a game has to be played in a city, therefore, will be adding country and city entity to beautify the design and make it readable */
+
+ /* Country entity */
+
+ Country | id(PK), name 
+
+ 
+
+ /* City entity: city belongs to a country, therefore it will have country id as foreign key */
+
+ City | id(PK), name, country_id(FK)
+
+
+
+/* Player entity will have the following properties * /
+   
+
+Player | Id(PK), name, dob, weight, height
+
+
+
+/* Team entity : For any game, two teams will be played against each other, a couple number of the players will be added to a team....in other words, FOR ANY GAME, a player belongs to team and a team has many players */
+
+Team | id(PK), name, city_id(FK), player_id(FK), start_date, end_date
+
+
+
+/*Game entity, a game involve two teams(home team and away team), and there will be score for each team, and the date the game was played. */
+
+Game |id(PK), home_team_id(FK), away_team_id(FK), home_team_final_score, away_team_final_score, date, remarks
+
+
+
+/* According to question, user queries frequently on players statistics, therefore, will have to add statistics or performance table to make it queryable and faster */
+
+Statistics |id(PK), player_id(FK), game_id(FK), created, points, blocks, steal, rebounds
+
+
+
+
+
+
+
+
+
+
