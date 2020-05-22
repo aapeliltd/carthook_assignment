@@ -41,8 +41,8 @@ print_r(fast_sort($numbers));
  *******************************************************************************/
 
 
-// lets calculate how long it will take to run this function in obe billion time
-// My system could not run it despite that i increase the max execution time to 9999
+// lets calculate how long it will take to run this function in one billion time
+// My system could not run it despite the fact that  i increase the max execution time to 9999
 // Kindly  increase the max execution time between the range of 0 to 9999 seconds before running this program.
 
 //Please if you are ready to run the following code, kindly uncomment.
