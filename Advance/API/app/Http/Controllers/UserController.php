@@ -4,83 +4,91 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Model\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Response;
+
+class ApiUser
+{
+    public $id;
+    public $name;
+    public $username;
+    public $email;
+    public $href;
+}
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public $message;
+    public $status_code;
+    public $response;
     public function index()
     {
-        return UserResource::collection(User::paginate(10));
+        $this->response = Http::get(env('BASE_URL') . '/users');
+        $users = [];
+        if ($this->response->successful()) {
+            $this->status_code = Response::HTTP_OK;
+            $this->message = "Success";
+            $data = $this->response->json();
+            if (count($data) > 0) {
+                foreach ($data as $item) {
+                    $user = new ApiUser();
+                    $user = $this->transformUser($item);
+                    $users[] = $user;
+                }
+            }
+        } else if ($this->response->failed() || $this->response->clientError()) { //400
+            $this->badRequest();
+        } else { //500
+            $this->internalServerError();
+        }
+        return response([
+            'data' => $users,
+            'message' => $this->message,
+        ], $this->status_code);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($user)
     {
-        //
-    }
+        $this->response = Http::get(env('BASE_URL') . '/users/' . $user);
+         $user = new ApiUser();
+        if ($this->response->successful()) {
+            $this->status_code = Response::HTTP_OK;
+            $this->message = "Success";
+            $data = $this->response->json();
+            $user = $this->transformUser($data);
+        } else if ($this->response->failed() || $this->response->clientError()) { //400
+            $this->badRequest();
+        } else { //500
+            $this->internalServerError();
+        }
+        return response([
+            'data' => $user,
+            'message' => $this->message,
+        ], $this->status_code);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
+    protected function badRequest()
     {
-        //
+        $this->message = "Bad Request";
+        $this->status_code = Response::HTTP_BAD_REQUEST;
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
+    protected function internalServerError()
     {
-        //
+        $this->message = "Internal server error";
+        $this->status_code = Response::HTTP_INTERNAL_SERVER_ERROR;
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
+    protected function transformUser($data) {
+        $user = new ApiUser();
+        $user->id = $data['id'];
+        $user->name = $data['name'];
+        $user->username = $data['username'];
+        $user->email = $data['email'];
+        $user->href = [
+            'link' => route('users.show', $data['id'])
+        ];
+        return $user;
     }
 }

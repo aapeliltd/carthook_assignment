@@ -16,9 +16,10 @@ class UserResource extends JsonResource
     {
         return [
             'name' => $this->name,
+            'username' => $this->username,
             'email' => $this->email,
             'href' => [
-                'link' => route('users.show', $this->id)
+                'link' => route('user.show', $this->id)
             ]
         ];
     }
