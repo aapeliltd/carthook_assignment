@@ -1,5 +1,6 @@
 {
-    "Users": [{
+    "users": [
+        {
             "id": "1",
             "email": "general.corkery@example.org",
             "name": "Mireya Bednar III",
