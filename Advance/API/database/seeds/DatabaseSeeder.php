@@ -12,11 +12,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //create 20 fake users
-        factory(App\Model\User::class, 20)->create();
+        factory(App\Model\User::class, 5)->create();
         //create 100 fake posts
-        factory(App\Model\Post::class, 100)->create();
+        factory(App\Model\Post::class, 15)->create();
         //create 500 fake comments
-        factory(App\Model\Comment::class, 300)->create();
+        factory(App\Model\Comment::class, 30)->create();
 
     }
 }
