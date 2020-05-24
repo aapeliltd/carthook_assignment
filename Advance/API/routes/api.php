@@ -10,3 +10,9 @@ Route::group(['prefix' => 'users'], function() {
     Route::apiResource('/{user}/posts', 'PostController');
 });
 
+Route::group(['prefix' => 'posts'], function() {
+    Route::apiResource('/{post}/comments', 'CommentController');
+});
+
+
+
