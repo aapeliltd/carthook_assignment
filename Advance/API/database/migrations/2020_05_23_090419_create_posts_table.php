@@ -29,7 +29,7 @@ class CreatePostsTable extends Migration
         });
 
         //adding fulltext to title attribute will enhance and increase the performance of searching post with title.
-        DB::statement('ALTER TABLE posts ADD FULLTEXT search(title)');
+        //DB::statement('ALTER TABLE posts ADD FULLTEXT search(title)');
     }
 
     /**

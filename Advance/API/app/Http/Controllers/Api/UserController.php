@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\UserResource;
 use App\Repositories\Users\UserRepositoryInterface;
 use App\Traits\Paginate;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 
 
 
@@ -39,6 +40,22 @@ class UserController extends Controller
     public function show($user_id)
     {
         $user =  new UserResource($this->userInterface->find($user_id));
+        if ($user) {
+            return response([
+                'data' => $user,
+                'message' => 'Success'
+            ], Response::HTTP_OK);
+        } else {
+            return response([
+                'error' => 'internal server error',
+
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getUserByEmail($email)
+    {
+        $user =  new UserResource($this->userInterface->findUserEmail($email));
         if ($user) {
             return response([
                 'data' => $user,

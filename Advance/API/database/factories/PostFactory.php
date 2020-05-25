@@ -10,8 +10,6 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $faker->word,
         'body' => $faker->paragraph,
-        'user_id' => function() {
-            return User::all()->random();
-        }
+        'user_id' => random_int(1, 10)
     ];
 });

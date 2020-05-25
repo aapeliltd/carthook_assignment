@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Posts;
 
-interface PostRepositoryInterface {
+interface PostRepositoryInterface
+{
 
 
     public function userPosts($user_id);
-    public function show($id);
-
+    public function find($id);
+    public function searchPostByTitle($title);
 }
-

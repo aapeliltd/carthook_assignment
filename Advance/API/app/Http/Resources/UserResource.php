@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Model\Comment;
+use App\Model\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -14,12 +16,14 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user = User::find($this->id);
         return [
             'name' => $this->name,
             'username' => $this->username,
             'email' => $this->email,
             'href' => [
-                'link' => route('users.show', $this->id)
+                'link' => route('users.show', $this->id),
+                'posts' => route('posts.index', $this->id)
             ]
         ];
     }

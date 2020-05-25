@@ -15,11 +15,14 @@ class PostResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
+            'user_id' => $this->user_id,
             'title' => $this->title,
             'body' => $this->body,
             'href' => [
                 'link' => route('posts.show', [$this->user_id, $this->id]),
-                'user' => route('users.show', $this->user_id)
+                'user' => route('users.show', $this->user_id),
+                'comments' => route('comments.index', $this->id)
             ]
         ];
     }
